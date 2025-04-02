@@ -7,7 +7,7 @@ export const metadata = {
 }
 
 const getAllItems = async() => {
-  const response = await fetch("${process.env.NEXT_PUBLIC_URL}/api/item/readall",
+  const response = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/item/readall`,
     {cache: "no-cache"}
   )
   const jsondata = await response.json()
