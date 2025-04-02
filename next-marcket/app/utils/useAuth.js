@@ -1,8 +1,8 @@
-import { useRouter, useEffect } from "next/router"
-import { useState } from "react"
+import { useState, useEffect } from "react"
+import { useRouter } from "next/navigation"
 import { jwtVerify } from "jose"
 
-const useAuth = async() => {
+const useAuth = () => {
     const [loginUserEmail, setLoginUserEmail] = useState("")
 
     const router = useRouter()
@@ -24,7 +24,7 @@ const useAuth = async() => {
             }
 
         }
-    checkToken()
+        checkToken()
     },[router])
 
     return loginUserEmail

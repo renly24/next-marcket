@@ -1,5 +1,6 @@
 "use client"
 import { useState } from "react" 
+import { useRouter } from "next/navigation"
 
 const Login = () => {
     const [User, setUser] = useState({
@@ -14,10 +15,12 @@ const Login = () => {
         })
     }
 
+    const router = useRouter()
+
     const handleSubmit = async(e) => {
         e.preventDefault()
         try{
-                const response = await fetch("http://localhost:3000/api/user/login",
+                const response = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/user/login`,
                 {
                     method: "POST",
                     headers: {
@@ -31,6 +34,8 @@ const Login = () => {
                 const jsonData = await response.json()
                 localStorage.setItem("token", jsonData.token)
                 alert(jsonData.message)
+                router.push("/")
+                router.refresh()
             } catch {
                 alert("ログイン失敗")
             }
@@ -38,6 +43,8 @@ const Login = () => {
 
         return (
             <div>
+                <title>ログインページ</title> 
+                <meta name="description" content="ログインページです"/>
                 <h1 className="page-title">ログイン</h1>
                 <form onSubmit = {handleSubmit}>
                     <input value={User.email} onChange={handlechange} type="text" name="email" placeholder="メールアドレス" required/> 
