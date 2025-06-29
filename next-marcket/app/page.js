@@ -7,17 +7,33 @@ export const metadata = {
 }
 
 const getAllItems = async() => {
-  const response = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/item/readall`,
-    {cache: "no-cache"}
-  )
-  const jsondata = await response.json()
-  const allitems = jsondata.allItems
-  return allitems
+  try {
+    const baseUrl = process.env.NEXT_PUBLIC_URL || 'http://localhost:3000'
+    const response = await fetch(`${baseUrl}/api/item/readall`, {cache: "no-cache"})
+    const jsondata = await response.json()
+    console.log("APIレスポンス:", jsondata)
+    const allitems = jsondata.allItems || []
+    console.log("取得したアイテム:", allitems)
+    return allitems
+  } catch (error) {
+    console.error("データ取得エラー:", error)
+    return []
+  }
 }
-
 
 const ReadAllItems = async() => {
   const allItems = await getAllItems()
+  
+  if (!allItems || allItems.length === 0) {
+    return (
+      <div className="min-h-screen p-8">
+        <h1 className="text-2xl font-bold mb-4">アイテム一覧</h1>
+        <p className="text-gray-600">現在アイテムがありません。</p>
+        <p className="text-sm text-gray-500 mt-2">新しいアイテムを追加してください。</p>
+      </div>
+    )
+  }
+
   return (
     <div className="grid-container-in">
       {allItems.map(item =>

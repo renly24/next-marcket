@@ -1,11 +1,14 @@
 import mongoose from "mongoose"
+
 const connectDB = async() => {
     try{
-        await mongoose.connect("mongodb+srv://renly:ux5vwYur4VS32W2B@cluster0.3df4c.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0")
-        console.log("Success: Connected to MongoDB")
-    }catch{
-        console.log("Failure: Unconnected to MongoDB")
-        throw new Error()
+        const mongoUri = process.env.MONGODB_URI 
+        await mongoose.connect(mongoUri)
+        console.log("Success: Connected to MongoDB (test database)")
+    }catch(error){
+        console.log("Failure: Unconnected to MongoDB", error.message)
+        throw new Error(`データベース接続エラー: ${error.message}`)
     }
 }
+
 export default connectDB
