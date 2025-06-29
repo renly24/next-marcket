@@ -9,7 +9,7 @@ export const metadata = {
 const getAllItems = async() => {
   try {
     const baseUrl = process.env.NEXT_PUBLIC_URL || 'http://localhost:3000'
-    const response = await fetch(`${baseUrl}/api/item/readall`, {cache: "no-cache"})
+    const response = await fetch(`${baseUrl}/api/item/readall`)
     const jsondata = await response.json()
     console.log("APIレスポンス:", jsondata)
     const allitems = jsondata.allItems || []
