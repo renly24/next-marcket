@@ -39,3 +39,8 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+LLM/
+growth-journal/
+h next-marcket main
+todo-list/
