@@ -3,7 +3,7 @@ import { useRouter } from "next/navigation"
 import { jwtVerify } from "jose"
 
 const useAuth = () => {
-    const [loginUserEmail, setLoginUserEmail] = useState("")
+    const [loginUserEmail, setLoginUserEmail] = useState(null)
 
     const router = useRouter()
 
@@ -12,7 +12,9 @@ const useAuth = () => {
             const token = localStorage.getItem("token")
 
             if(!token){
+                setLoginUserEmail("")
                 router.push("/user/login")
+                return
             }
     
             try{
@@ -20,6 +22,7 @@ const useAuth = () => {
                 const decodedJwt = await jwtVerify(token, secretKey) 
                 setLoginUserEmail(decodedJwt.payload.email)
             }catch{
+                setLoginUserEmail("")
                 router.push("/user/login")
             }
 

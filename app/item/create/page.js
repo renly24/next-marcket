@@ -14,6 +14,14 @@ const CreateItem = () => {
     const [description, setDescription] = useState("")
 
     const handleSubmit = async() => {
+        if (loginUserEmail === null) {
+            alert("認証確認中です。しばらくお待ちください。");
+            return;
+        }
+        if (!loginUserEmail) {
+            alert("権限がありません。");
+            return;
+        }
         try{
             const response = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/item/create`,
                 {
@@ -41,22 +49,25 @@ const CreateItem = () => {
         }
     }
 
-    if(loginUserEmail){
-        return (
-            <div>
-                <h1 className="page-title"> アイテム作成 </h1> 
-                <ImgInput setImage={setImage}/>
-                <form onSubmit={handleSubmit}>
-                    <input value={title} onChange={(e) => setTitle(e.target.value)} type="text" name="title" placeholder="アイテム名" required/>
-                    <input value={price} onChange={(e) => setPrice(e.target.value)} type="text" name="price" placeholder="価格" required/> 
-                    <input value={image} onChange={(e) => setImage(e.target.value)} type="text" name="image" placeholder="画像" required/> 
-                    <textarea value={description} onChange={(e) => setDescription(e.target.value)} name="description" rows={15} placeholder="商品説明" required></textarea> 
-                    <button> 作成 </button>
-                </form>
-            </div>
-        )
-    } else { 
-        return <h1>権限がありません</h1> 
+    if (loginUserEmail === null) {
+        return <div>認証確認中...</div>;
     }
+    if (!loginUserEmail) {
+        return <h1>権限がありません</h1>;
+    }
+
+    return (
+        <div>
+            <h1 className="page-title"> アイテム作成 </h1> 
+            <ImgInput setImage={setImage}/>
+            <form onSubmit={handleSubmit}>
+                <input value={title} onChange={(e) => setTitle(e.target.value)} type="text" name="title" placeholder="アイテム名" required/>
+                <input value={price} onChange={(e) => setPrice(e.target.value)} type="text" name="price" placeholder="価格" required/> 
+                <input value={image} onChange={(e) => setImage(e.target.value)} type="text" name="image" placeholder="画像" required/> 
+                <textarea value={description} onChange={(e) => setDescription(e.target.value)} name="description" rows={15} placeholder="商品説明" required></textarea> 
+                <button> 作成 </button>
+            </form>
+        </div>
+    )
 }
 export default CreateItem
